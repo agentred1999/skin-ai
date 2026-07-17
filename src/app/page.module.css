@@ -1,0 +1,254 @@
+.page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 3rem;
+  overflow: hidden;
+}
+
+.header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.introTag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-gray);
+}
+
+.enterCodeButton {
+  padding: 0.7rem 1.35rem;
+  border-radius: 999px;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: opacity 0.2s ease;
+}
+
+.enterCodeButton:hover {
+  opacity: 0.8;
+}
+
+.main {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3.5rem 2.5rem;
+}
+
+.heroFrame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(68vw, 420px);
+  height: min(68vw, 420px);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  transform: translate(-50%, -50%) rotate(45deg);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.headline {
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.subtext {
+  margin-top: 1.25rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--color-black);
+  max-width: 280px;
+  line-height: 1.55;
+}
+
+.enterExperience {
+  margin-top: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: opacity 0.2s ease;
+}
+
+.enterExperience:hover {
+  opacity: 0.7;
+}
+
+.enterExperienceIcon {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-black);
+  transform: rotate(45deg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.enterExperienceIcon span {
+  display: inline-block;
+  transform: rotate(-45deg);
+  font-size: 0.55rem;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 1.5rem;
+  }
+
+  .hero {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .heroFrame {
+    width: min(78vw, 340px);
+    height: min(78vw, 340px);
+  }
+
+  .subtext {
+    max-width: 240px;
+    font-size: 0.75rem;
+  }
+}
+
+
+.mobileDiamond {
+  display: none;
+}
+
+.enterExperience {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .mobileDiamond {
+    display: block;
+    position: absolute;
+    top: 44%;
+    left: 50%;
+    width: 48vw;
+    height: 48vw;
+    max-width: 260px;
+    max-height: 260px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    transform: translate(-50%, -50%) rotate(45deg);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mobileDiamondInner {
+    display: block;
+    position: absolute;
+    top: 44%;
+    left: 50%;
+    width: 38vw;
+    height: 38vw;
+    max-width: 200px;
+    max-height: 200px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    transform: translate(-50%, -50%) rotate(45deg);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .sideAction.left,
+  .sideAction.right {
+    display: none;
+  }
+
+  .enterExperience {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 2;
+    position: relative;
+  }
+
+  .enterExperienceIcon {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--color-black);
+    transform: rotate(45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+  }
+
+  .enterExperienceIcon span {
+    transform: rotate(-45deg);
+  }
+}
+
+
+.mobileSubtext {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .mobileSubtext {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--color-black);
+    max-width: 260px;
+    line-height: 1.6;
+    margin: 0.75rem 0 1.25rem;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .footer {
+    display: none;
+  }
+}

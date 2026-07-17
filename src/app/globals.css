@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-black: #1a1a1a;
+  --color-white: #ffffff;
+  --color-off-white: #ffffff;
+  --color-gray: #6a6a6a;
+  --color-light-gray: #e4e4e4;
+  --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: var(--color-off-white);
+  color: var(--color-black);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.corner-diamond {
+  position: fixed;
+  width: 620px;
+  height: 620px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  transform: rotate(-45deg);
+  pointer-events: none;
+  z-index: 0;
+}
+.corner-diamond.top-left {
+  top: -310px;
+  left: -310px;
+}
+.corner-diamond.top-right {
+  top: -310px;
+  right: -310px;
+}
+.corner-diamond.bottom-left {
+  bottom: -310px;
+  left: -310px;
+}
+.corner-diamond.bottom-right {
+  bottom: -310px;
+  right: -310px;
+}
+
+@media (max-width: 640px) {
+  .corner-diamond {
+    display: none;
+  }
+}
