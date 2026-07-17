@@ -1,36 +1,65 @@
-'use client';
-
-import Link from 'next/link';
+import Link from "next/link";
+import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#f8f7f4] text-black font-light">
-      <nav className="fixed top-0 w-full bg-[#f8f7f4]/90 backdrop-blur border-b border-black/10 z-50">
-        <div className="max-w-6xl mx-auto px-8 py-6 flex justify-between">
-          <div className="text-2xl tracking-tighter">SKINSTRIC</div>
-          <div className="text-xs uppercase tracking-widest pt-1">INTRO</div>
+    <div className={styles.page}>
+      <div className="corner-diamond top-left" />
+      <div className="corner-diamond top-right" />
+      <div className="corner-diamond bottom-left" />
+      <div className="corner-diamond bottom-right" />
+
+      <header className={styles.header}>
+        <div className={styles.logoGroup}>
+          <span className={styles.logo}>SKINSTRIC</span>
+          <span className={styles.introTag}>[ INTRO ]</span>
         </div>
-      </nav>
+        <button className={styles.enterCodeButton}>Enter Code</button>
+      </header>
 
-      <div className="h-screen flex items-center justify-center relative">
-        <div className="text-center">
-          <h1 className="text-[140px] leading-none tracking-[-6px] font-light mb-6">
-            Sophisticated<br />skincare
-          </h1>
-          <p className="text-2xl text-gray-600 max-w-md mx-auto mb-16">
-            Skinstric developed an A.I. that creates a highly-personalized routine tailored to what your skin needs.
-          </p>
+      <main className={styles.main}>
+        <div className={styles.mobileDiamond} />
+        <div className={styles.mobileDiamondInner} />
 
-          <div className="flex gap-8 justify-center">
-            <Link href="/testing" className="group border border-black px-12 py-6 text-sm uppercase tracking-widest hover:bg-black hover:text-white transition-all flex items-center gap-3">
-              DISCOVER A.I. <span className="text-3xl group-hover:translate-x-2 transition">→</span>
-            </Link>
-            <Link href="/testing" className="group border border-black px-12 py-6 text-sm uppercase tracking-widest hover:bg-black hover:text-white transition-all flex items-center gap-3">
-              TAKE TEST <span className="text-3xl group-hover:translate-x-2 transition">→</span>
-            </Link>
+        <h1 className={styles.headline}>
+          Sophisticated
+          <br />
+          skincare
+        </h1>
+
+        <p className={styles.mobileSubtext}>
+          Skinstric developed an A.I. that creates a highly-personalized
+          routine tailored to what your skin needs.
+        </p>
+
+        <Link href="/testing" className={styles.enterExperience}>
+          Enter Experience
+          <span className={styles.enterExperienceIcon}>
+            <span>&#9654;</span>
+          </span>
+        </Link>
+
+        <Link href="/testing" className={`${styles.sideAction} ${styles.left}`}>
+          <div className={styles.diamond}>
+            <span>&#9664;</span>
           </div>
-        </div>
-      </div>
+          <span className={styles.sideActionLabel}>Discover A.I.</span>
+        </Link>
+
+        <Link href="/testing" className={`${styles.sideAction} ${styles.right}`}>
+          <div className={styles.diamond}>
+            <span>&#9654;</span>
+          </div>
+          <span className={styles.sideActionLabel}>Take Test</span>
+        </Link>
+      </main>
+
+      <footer className={styles.footer}>
+        <p className={styles.subtext}>
+          Skinstric developed an A.I. that creates a highly-personalized
+          routine tailored to what your skin needs.
+        </p>
+      </footer>
     </div>
   );
 }
