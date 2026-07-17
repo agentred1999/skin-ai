@@ -37,8 +37,7 @@
 }
 
 .sideAction:hover .diamond {
-  background-color: var(--color-black);
-  color: var(--color-white);
+  border-color: var(--color-black);
   transform: rotate(45deg) scale(1.08);
 }
 
