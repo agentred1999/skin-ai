@@ -27,7 +27,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 .diamond span {
@@ -39,6 +39,7 @@
 .sideAction:hover .diamond {
   background-color: var(--color-black);
   color: var(--color-white);
+  transform: rotate(45deg) scale(1.08);
 }
 
 .sideActionLabel {
@@ -94,11 +95,12 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .enterCodeButton:hover {
   opacity: 0.8;
+  transform: translateY(-2px);
 }
 
 .main {
