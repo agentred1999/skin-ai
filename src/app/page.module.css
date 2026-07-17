@@ -306,3 +306,37 @@
     display: none;
   }
 }
+
+
+.diamond {
+  position: relative;
+  overflow: hidden;
+}
+
+.diamondIcon {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  transform: rotate(-45deg);
+  font-size: 0.7rem;
+}
+
+.diamondFill {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-black);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0s linear;
+  z-index: 0;
+}
+
+.diamondFilling {
+  transform: scaleY(1);
+  transition: transform 0.8s linear;
+}
+
+.diamondFilling ~ .diamondIcon,
+.sideAction:has(.diamondFilling) .diamondIcon {
+  color: var(--color-white);
+}

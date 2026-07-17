@@ -1,5 +1,60 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 import styles from "./page.module.css";
+
+
+function HoldToNavigate({
+  href,
+  side,
+  icon,
+  label,
+}: {
+  href: string;
+  side: "left" | "right";
+  icon: string;
+  label: string;
+}) {
+  const router = useRouter();
+  const [holding, setHolding] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const start = () => {
+    setHolding(true);
+    timerRef.current = setTimeout(() => {
+      router.push(href);
+    }, 800);
+  };
+
+  const cancel = () => {
+    setHolding(false);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  return (
+    <div
+      className={`${styles.sideAction} ${styles[side]}`}
+      onMouseDown={start}
+      onMouseUp={cancel}
+      onMouseLeave={cancel}
+      onTouchStart={start}
+      onTouchEnd={cancel}
+      role="button"
+      tabIndex={0}
+    >
+      <div className={styles.diamond}>
+        <span className={`${styles.diamondFill} ${holding ? styles.diamondFilling : ""}`} />
+        <span className={styles.diamondIcon}>{icon}</span>
+      </div>
+      <span className={styles.sideActionLabel}>{label}</span>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -39,19 +94,9 @@ export default function Home() {
           </span>
         </Link>
 
-        <Link href="/testing" className={`${styles.sideAction} ${styles.left}`}>
-          <div className={styles.diamond}>
-            <span>&#9664;</span>
-          </div>
-          <span className={styles.sideActionLabel}>Discover A.I.</span>
-        </Link>
+        <HoldToNavigate href="/testing" side="left" icon="◀" label="Discover A.I." />
 
-        <Link href="/testing" className={`${styles.sideAction} ${styles.right}`}>
-          <div className={styles.diamond}>
-            <span>&#9654;</span>
-          </div>
-          <span className={styles.sideActionLabel}>Take Test</span>
-        </Link>
+        <HoldToNavigate href="/testing" side="right" icon="▶" label="Take Test" />
       </main>
 
       <footer className={styles.footer}>
