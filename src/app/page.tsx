@@ -6,6 +6,16 @@ import { useRef, useState } from "react";
 import styles from "./page.module.css";
 
 
+function ChevronIcon({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 12 12">
+      <polygon
+        points={direction === "left" ? "9,1 3,6 9,11" : "3,1 9,6 3,11"}
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
 function HoldToNavigate({
   href,
   side,
@@ -14,7 +24,7 @@ function HoldToNavigate({
 }: {
   href: string;
   side: "left" | "right";
-  icon: string;
+  icon: React.ReactNode;
   label: string;
 }) {
   const router = useRouter();
@@ -59,10 +69,18 @@ function HoldToNavigate({
 export default function Home() {
   return (
     <div className={styles.page}>
-      <div className="corner-diamond top-left" />
-      <div className="corner-diamond top-right" />
-      <div className="corner-diamond bottom-left" />
-      <div className="corner-diamond bottom-right" />
+      <svg style={{ position: "fixed", top: 0, left: 0, pointerEvents: "none", zIndex: 0 }} width="240" height="240" viewBox="0 0 240 240">
+        <polyline points="240,40 170,170 40,240" fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="1.5" strokeDasharray="5 6" />
+      </svg>
+      <svg style={{ position: "fixed", top: 0, right: 0, pointerEvents: "none", zIndex: 0 }} width="240" height="240" viewBox="0 0 240 240">
+        <polyline points="0,40 70,170 200,240" fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="1.5" strokeDasharray="5 6" />
+      </svg>
+      <svg style={{ position: "fixed", bottom: 0, left: 0, pointerEvents: "none", zIndex: 0 }} width="240" height="240" viewBox="0 0 240 240">
+        <polyline points="240,200 170,70 40,0" fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="1.5" strokeDasharray="5 6" />
+      </svg>
+      <svg style={{ position: "fixed", bottom: 0, right: 0, pointerEvents: "none", zIndex: 0 }} width="240" height="240" viewBox="0 0 240 240">
+        <polyline points="0,200 70,70 200,0" fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="1.5" strokeDasharray="5 6" />
+      </svg>
 
       <header className={styles.header}>
         <div className={styles.logoGroup}>
@@ -90,13 +108,13 @@ export default function Home() {
         <Link href="/testing" className={styles.enterExperience}>
           Enter Experience
           <span className={styles.enterExperienceIcon}>
-            <span>&#9654;</span>
+            <span className={styles.enterExperienceArrow}>&#9654;</span>
           </span>
         </Link>
 
-        <HoldToNavigate href="/testing" side="left" icon="◀" label="Discover A.I." />
+        <HoldToNavigate href="/testing" side="left" icon={<ChevronIcon direction="left" />} label="Discover A.I." />
 
-        <HoldToNavigate href="/testing" side="right" icon="▶" label="Take Test" />
+        <HoldToNavigate href="/testing" side="right" icon={<ChevronIcon direction="right" />} label="Take Test" />
       </main>
 
       <footer className={styles.footer}>
