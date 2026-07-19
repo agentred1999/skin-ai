@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -
 
 CSS_FILE="src/app/page.module.css"
 

@@ -69,17 +69,11 @@ function HoldToNavigate({
 export default function Home() {
   return (
     <div className={styles.page}>
-      <svg style={{ position: "fixed", top: 0, left: 0, pointerEvents: "none", zIndex: 0 }} width="240" height="240" viewBox="0 0 240 240">
-        <polyline points="240,40 170,170 40,240" fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="1.5" strokeDasharray="5 6" />
+      <svg style={{ position: "fixed", top: "50%", left: "15%", transform: "translateY(-50%)", pointerEvents: "none", zIndex: 0 }} width="80" height="160" viewBox="0 0 80 160">
+        <polyline points="10,10 70,80 10,150" fill="none" stroke="rgba(0,0,0,0.3)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
-      <svg style={{ position: "fixed", top: 0, right: 0, pointerEvents: "none", zIndex: 0 }} width="240" height="240" viewBox="0 0 240 240">
-        <polyline points="0,40 70,170 200,240" fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="1.5" strokeDasharray="5 6" />
-      </svg>
-      <svg style={{ position: "fixed", bottom: 0, left: 0, pointerEvents: "none", zIndex: 0 }} width="240" height="240" viewBox="0 0 240 240">
-        <polyline points="240,200 170,70 40,0" fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="1.5" strokeDasharray="5 6" />
-      </svg>
-      <svg style={{ position: "fixed", bottom: 0, right: 0, pointerEvents: "none", zIndex: 0 }} width="240" height="240" viewBox="0 0 240 240">
-        <polyline points="0,200 70,70 200,0" fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="1.5" strokeDasharray="5 6" />
+      <svg style={{ position: "fixed", top: "50%", right: "15%", transform: "translateY(-50%)", pointerEvents: "none", zIndex: 0 }} width="80" height="160" viewBox="0 0 80 160">
+        <polyline points="70,10 10,80 700,150" fill="none" stroke="rgba(0,0,0,0.3)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
 
       <header className={styles.header}>

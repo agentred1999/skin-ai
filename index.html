@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geometry Transform</title>
+  <style>
+    body {
+      background: #1a1a2e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .canvas-container {
+      background: #16213e;
+      border-radius: 32px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      border: 1px solid #0f3460;
+    }
+    svg {
+      display: block;
+      width: 800px;
+      height: 500px;
+      background: #0a0a1a;
+      border-radius: 20px;
+      box-shadow: inset 0 0 80px rgba(0, 20, 80, 0.6);
+      overflow: visible;
+    }
+    /* The bottom-positioned groups — 50% from bottom, rotated */
+    .team-bottom-left {
+      position: relative;
+      /* in SVG we use transform: translate(…%) rotate(…) */
+    }
+    .badge {
+      filter: drop-shadow(0 8px 20px rgba(0, 200, 255, 0.3));
+      transition: all 0.2s ease;
+    }
+    .badge:hover {
+      filter: drop-shadow(0 0 30px #00d4ff);
+    }
+    /* extra styling for the "bottom 50%" groups */
+  </style>
+</head>
+<body>
+<div class="canvas-container">
+  <=viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#0d0d2b"/>
+        <stop offset="100%" stop-color="#1a1a3e"/>
+      </linearGradient>
+      <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#2a2a6e" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#0a0a1a" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="neon">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- background -->
+    <rect width="800" height="500" fill="url(#bgGrad)"/>
+    <circle cx="400" cy="250" r="300" fill="url(#glow)"/>
+
+    <!-- ========================================================= -->
+    <!--  LEFT BADGE — "bottom 50% from bottom", rotated -45°       -->
+    <!--  positioned with transform: translate(…) rotate(-45deg)    -->
+    <!-- ========================================================= -->
+    <g
+      class="team-bottom-left"
+      transform="translate(120, 420) rotate(-45)"
+      style="transform-origin: 120px 420px;"
+    >
+      <!-- image tag inside group — "it's the image tag and then the actual tag" -->
+      <image
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' rx='24' fill='%2316224e' stroke='%2300d4ff' stroke-width='3'/%3E%3Ctext x='60' y='60' font-family='monospace' font-size='14' fill='%2300d4ff' text-anchor='middle' dominant-baseline='central'%3E⚡TEAM%3C/text%3E%3Ctext x='60' y='84' font-family='monospace' font-size='10' fill='%2388ddff' text-anchor='middle'%3ELEFT%3C/text%3E%3C/svg%3E"
+        width="120"
+        height="120"
+        class="badge"
+        style="filter: drop-shadow(0 0 20px #0044ff);"
+      />
+    </g>
+
+    <!-- ========================================================= -->
+    <!--  RIGHT BADGE — "bottom 50% from bottom", rotated +45°      -->
+    <!--  positioned with transform: translate(…) rotate(45deg)     -->
+    <!-- ========================================================= -->
+    <g
+      class="team-bottom-right"
+      transform="translate(680, 420) rotate(45)"
+      style="transform-origin: 680px 420px;"
+    >
+      <image
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' rx='24' fill='%2316224e' stroke='%23ff44aa' stroke-width='3'/%3E%3Ctext x='60' y='60' font-family='monospace' font-size='14' fill='%23ff44aa' text-anchor='middle' dominant-baseline='central'%3E🔥TEAM%3C/text%3E%3Ctext x='60' y='84' font-family='monospace' font-size='10' fill='%23ff99cc' text-anchor='middle'%3ERIGHT%3C/text%3E%3C/svg%3E"
+        width="120"
+        height="120"
+        class="badge"
+        style="filter: drop-shadow(0 0 20px #ff0066);"
+      />
+    </g>
+
+    <!-- ========================================================= -->
+    <!--  extra floating "bottom" markers (for reference)          -->
+    <!-- ========================================================= -->
+    <text x="120" y="490" fill="#446688" font-family="monospace" font-size="10" opacity="0.4">⬅️ -45° · 50% from bottom</text>
+    <text x="600" y="490" fill="#446688" font-family="monospace" font-size="10" opacity="0.4">45° · 50% from bottom ➡️</text>
+
+    <!-- central axis hint -->
+    <line x1="0" y1="420" x2="800" y2="420" stroke="#2a3a6a" stroke-width="1" stroke-dasharray="6 10" opacity="0.3"/>
+    <text x="360" y="410" fill="#2a4a7a" font-family="monospace" font-size="10" opacity="0.3">— bottom 50% baseline —</text>
+
+    <!-- ========================================================= -->
+    <!--  “testing it out” — extra scaled group from transcript    -->
+    <!--  "I like if you want to do a little bit more. You can     -->
+    <!--   just do yourself like that. Testing it out."            -->
+    <!-- ========================================================= -->
+    <g transform="translate(400, 220) scale(0.6)" opacity="0.15">
+      <rect x="-40" y="-40" width="80" height="80" rx="16" fill="#0f3460" stroke="#00d4ff" stroke-width="2"/>
+      <text x="0" y="4" fill="#00d4ff" font-family="monospace" font-size="12" text-anchor="middle">test</text>
+    </g>
+
+    <!-- "take a screenshot of that or maybe pause the video here" -->
+    <!-- we render an explicit "pause/screenshot" marker -->
+    <circle cx="40" cy="40" r="14" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.25" stroke-dasharray="4 4"/>
+    <text x="40" y="46" fill="#00d4ff" font-family="monospace" font-size="8" opacity="0.3" text-anchor="middle">⏸️</text>
+
+    <!-- "I'll leave you on the top. I'll leave you on the bottom like this." -->
+    <!-- small top/bottom decorations -->
+    <rect x="20" y="20" width="30" height="6" rx="3" fill="#1a3a6a" opacity="0.2"/>
+    <rect x="20" y="474" width="30" height="6" rx="3" fill="#1a3a6a" opacity="0.2"/>
+
+    <!-- "I'll figure something out for that. I'll actually need a lot of things." -->
+    <!-- extra fine-tuning hints with rotation -->
+    <g transform="translate(400, 420)" opacity="0.08">
+      <circle cx="0" cy="0" r="180" fill="none" stroke="#00d4ff" stroke-width="1" stroke-dasharray="2 8"/>
+      <circle cx="0" cy="0" r="220" fill="none" stroke="#ff44aa" stroke-width="1" stroke-dasharray="2 8"/>
+    </g>
+
+    <!-- "they act diagonally" — diagonal guides -->
+    <line x1="0" y1="0" x2="800" y2="500" stroke="#2a4a7a" stroke-width="1" opacity="0.1" stroke-dasharray="4 12"/>
+    <line x1="800" y1="0" x2="0" y2="500" stroke="#2a4a7a" stroke-width="1" opacity="0.1" stroke-dasharray="4 12"/>
+
+    <!-- "I think that looks good" – final confirmation -->
+    <text x="400" y="60" fill="#00d4ff" font-family="monospace" font-size="10" opacity="0.15" text-anchor="middle" letter-spacing="4">✦ SYMMETRY AT 45° ✦</text>
+
+  </svg>
+</div>
+</body>
+</html>
+EOFcat <<'EOF' > index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geometry Transform</title>
+  <style>
+    body {
+      background: #1a1a2e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .canvas-container {
+      background: #16213e;
+      border-radius: 32px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      border: 1px solid #0f3460;
+    }
+    svg {
+      display: block;
+      width: 800px;
+      height: 500px;
+      background: #0a0a1a;
+      border-radius: 20px;
+      box-shadow: inset 0 0 80px rgba(0, 20, 80, 0.6);
+      overflow: visible;
+    }
+    /* The bottom-positioned groups — 50% from bottom, rotated */
+    .team-bottom-left {
+      position: relative;
+      /* in SVG we use transform: translate(…%) rotate(…) */
+    }
+    .badge {
+      filter: drop-shadow(0 8px 20px rgba(0, 200, 255, 0.3));
+      transition: all 0.2s ease;
+    }
+    .badge:hover {
+      filter: drop-shadow(0 0 30px #00d4ff);
+    }
+    /* extra styling for the "bottom 50%" groups */
+  </style>
+</head>
+<body>
+<div class="canvas-container">
+  <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#0d0d2b"/>
+        <stop offset="100%" stop-color="#1a1a3e"/>
+      </linearGradient>
+      <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#2a2a6e" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#0a0a1a" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="neon">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- background -->
+    <rect width="800" height="500" fill="url(#bgGrad)"/>
+    <circle cx="400" cy="250" r="300" fill="url(#glow)"/>
+
+    <!-- ========================================================= -->
+    <!--  LEFT BADGE — "bottom 50% from bottom", rotated -45°       -->
+    <!--  positioned with transform: translate(…) rotate(-45deg)    -->
+    <!-- ========================================================= -->
+    <g
+      class="team-bottom-left"
+      transform="translate(120, 420) rotate(-45)"
+      style="transform-origin: 120px 420px;"
+    >
+      <!-- image tag inside group — "it's the image tag and then the actual tag" -->
+      <image
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' rx='24' fill='%2316224e' stroke='%2300d4ff' stroke-width='3'/%3E%3Ctext x='60' y='60' font-family='monospace' font-size='14' fill='%2300d4ff' text-anchor='middle' dominant-baseline='central'%3E⚡TEAM%3C/text%3E%3Ctext x='60' y='84' font-family='monospace' font-size='10' fill='%2388ddff' text-anchor='middle'%3ELEFT%3C/text%3E%3C/svg%3E"
+        width="120"
+        height="120"
+        class="badge"
+        style="filter: drop-shadow(0 0 20px #0044ff);"
+      />
+    </g>
+
+    <!-- ========================================================= -->
+    <!--  RIGHT BADGE — "bottom 50% from bottom", rotated +45°      -->
+    <!--  positioned with transform: translate(…) rotate(45deg)     -->
+    <!-- ========================================================= -->
+    <g
+      class="team-bottom-right"
+      transform="translate(680, 420) rotate(45)"
+      style="transform-origin: 680px 420px;"
+    >
+      <image
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' rx='24' fill='%2316224e' stroke='%23ff44aa' stroke-width='3'/%3E%3Ctext x='60' y='60' font-family='monospace' font-size='14' fill='%23ff44aa' text-anchor='middle' dominant-baseline='central'%3E🔥TEAM%3C/text%3E%3Ctext x='60' y='84' font-family='monospace' font-size='10' fill='%23ff99cc' text-anchor='middle'%3ERIGHT%3C/text%3E%3C/svg%3E"
+        width="120"
+        height="120"
+        class="badge"
+        style="filter: drop-shadow(0 0 20px #ff0066);"
+      />
+    </g>
+
+    <!-- ========================================================= -->
+    <!--  extra floating "bottom" markers (for reference)          -->
+    <!-- ========================================================= -->
+    <text x="120" y="490" fill="#446688" font-family="monospace" font-size="10" opacity="0.4">⬅️ -45° · 50% from bottom</text>
+    <text x="600" y="490" fill="#446688" font-family="monospace" font-size="10" opacity="0.4">45° · 50% from bottom ➡️</text>
+
+    <!-- central axis hint -->
+    <line x1="0" y1="420" x2="800" y2="420" stroke="#2a3a6a" stroke-width="1" stroke-dasharray="6 10" opacity="0.3"/>
+    <text x="360" y="410" fill="#2a4a7a" font-family="monospace" font-size="10" opacity="0.3">— bottom 50% baseline —</text>
+
+    <!-- ========================================================= -->
+    <!--  “testing it out” — extra scaled group from transcript    -->
+    <!--  "I like if you want to do a little bit more. You can     -->
+    <!--   just do yourself like that. Testing it out."            -->
+    <!-- ========================================================= -->
+    <g transform="translate(400, 220) scale(0.6)" opacity="0.15">
+      <rect x="-40" y="-40" width="80" height="80" rx="16" fill="#0f3460" stroke="#00d4ff" stroke-width="2"/>
+      <text x="0" y="4" fill="#00d4ff" font-family="monospace" font-size="12" text-anchor="middle">test</text>
+    </g>
+
+    <!-- "take a screenshot of that or maybe pause the video here" -->
+    <!-- we render an explicit "pause/screenshot" marker -->
+    <circle cx="40" cy="40" r="14" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.25" stroke-dasharray="4 4"/>
+    <text x="40" y="46" fill="#00d4ff" font-family="monospace" font-size="8" opacity="0.3" text-anchor="middle">⏸️</text>
+
+    <!-- "I'll leave you on the top. I'll leave you on the bottom like this." -->
+    <!-- small top/bottom decorations -->
+    <rect x="20" y="20" width="30" height="6" rx="3" fill="#1a3a6a" opacity="0.2"/>
+    <rect x="20" y="474" width="30" height="6" rx="3" fill="#1a3a6a" opacity="0.2"/>
+
+    <!-- "I'll figure something out for that. I'll actually need a lot of things." -->
+    <!-- extra fine-tuning hints with rotation -->
+    <g transform="translate(400, 420)" opacity="0.08">
+      <circle cx="0" cy="0" r="180" fill="none" stroke="#00d4ff" stroke-width="1" stroke-dasharray="2 8"/>
+      <circle cx="0" cy="0" r="220" fill="none" stroke="#ff44aa" stroke-width="1" stroke-dasharray="2 8"/>
+    </g>
+
+    <!-- "they act diagonally" — diagonal guides -->
+    <line x1="0" y1="0" x2="800" y2="500" stroke="#2a4a7a" stroke-width="1" opacity="0.1" stroke-dasharray="4 12"/>
+    <line x1="800" y1="0" x2="0" y2="500" stroke="#2a4a7a" stroke-width="1" opacity="0.1" stroke-dasharray="4 12"/>
+
+    <!-- "I think that looks good" – final confirmation -->
+    <text x="400" y="60" fill="#00d4ff" font-family="monospace" font-size="10" opacity="0.15" text-anchor="middle" letter-spacing="4">✦ SYMMETRY AT 45° ✦</text>
+
+  </svg>
+</div>
+</body>
+</html>
