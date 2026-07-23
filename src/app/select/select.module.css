@@ -1,0 +1,177 @@
+.page {
+  --ink: #0d0d0d;
+  --line: #d9d9d4;
+  --paper: #ffffff;
+  --muted: #8a8a85;
+  --cell: #ececec;
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Courier New", Courier, monospace;
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brandMark {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--ink);
+  padding: 6px 10px;
+}
+
+.brandSub {
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.enterCode {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.headerBlock {
+  margin-top: 20px;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.subtitle {
+  font-size: 11px;
+  color: #3a6fd8;
+  margin-top: 4px;
+}
+
+.stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diamondGrid {
+  position: relative;
+  width: 440px;
+  height: 440px;
+}
+
+.cell {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  background: var(--cell);
+  transform: rotate(45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  transition: background 0.2s ease;
+}
+
+.cell span,
+.cell {
+  line-height: 1.5;
+}
+
+.cell:hover {
+  background: #dcdcdc;
+}
+
+.cell > * {
+  transform: rotate(-45deg);
+}
+
+.top {
+  top: 0;
+  left: 50%;
+  margin-left: -110px;
+}
+
+.left {
+  top: 50%;
+  left: 0;
+  margin-top: -110px;
+}
+
+.right {
+  top: 50%;
+  right: 0;
+  margin-top: -110px;
+}
+
+.bottom {
+  bottom: 0;
+  left: 50%;
+  margin-left: -110px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.backBtn,
+.proceedBtn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+}
+
+.navDiamond {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--ink);
+  transform: rotate(45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navDiamond svg {
+  transform: rotate(-45deg);
+  width: 14px;
+  height: 14px;
+}
+
+.navLabel {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}

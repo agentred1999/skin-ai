@@ -28,37 +28,16 @@ function HoldToNavigate({
   label: string;
 }) {
   const router = useRouter();
-  const [holding, setHolding] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const start = () => {
-    setHolding(true);
-    timerRef.current = setTimeout(() => {
-      router.push(href);
-    }, 800);
-  };
-
-  const cancel = () => {
-    setHolding(false);
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-  };
 
   return (
     <div
       className={`${styles.sideAction} ${styles[side]}`}
-      onMouseDown={start}
-      onMouseUp={cancel}
-      onMouseLeave={cancel}
-      onTouchStart={start}
-      onTouchEnd={cancel}
+      onClick={() => router.push(href)}
       role="button"
       tabIndex={0}
+      style={{ cursor: "pointer" }}
     >
       <div className={styles.diamond}>
-        <span className={`${styles.diamondFill} ${holding ? styles.diamondFilling : ""}`} />
         <span className={styles.diamondIcon}>{icon}</span>
       </div>
       <span className={styles.sideActionLabel}>{label}</span>
@@ -69,11 +48,11 @@ function HoldToNavigate({
 export default function Home() {
   return (
     <div className={styles.page}>
-      <svg style={{ position: "fixed", top: "50%", left: "15%", transform: "translateY(-50%)", pointerEvents: "none", zIndex: 0 }} width="80" height="160" viewBox="0 0 80 160">
-        <polyline points="10,10 70,80 10,150" fill="none" stroke="rgba(0,0,0,0.3)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <svg style={{ position: "fixed", top: "50%", left: "-120px", transform: "translateY(-50%)", pointerEvents: "none", zIndex: 0 }} width="420" height="900" viewBox="0 0 420 900">
+        <polyline points="0,0 380,450 0,900" fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth="1" />
       </svg>
-      <svg style={{ position: "fixed", top: "50%", right: "15%", transform: "translateY(-50%)", pointerEvents: "none", zIndex: 0 }} width="80" height="160" viewBox="0 0 80 160">
-        <polyline points="70,10 10,80 700,150" fill="none" stroke="rgba(0,0,0,0.3)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <svg style={{ position: "fixed", top: "50%", right: "-120px", transform: "translateY(-50%)", pointerEvents: "none", zIndex: 0 }} width="420" height="900" viewBox="0 0 420 900">
+        <polyline points="380,0 0,450 380,900" fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth="1" />
       </svg>
 
       <header className={styles.header}>
