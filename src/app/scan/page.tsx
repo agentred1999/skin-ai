@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./scan.module.css";
 
@@ -67,7 +67,7 @@ function minDelay<T>(promise: Promise<T>, ms: number): Promise<T> {
   );
 }
 
-export default function ScanPage() {
+function ScanPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isGalleryMode = searchParams.get("source") === "gallery";
@@ -103,7 +103,7 @@ export default function ScanPage() {
         throw new Error(`${res.status} ${res.statusText} — ${bodyText.slice(0, 300)}`);
       }
 
-      let json: any;
+      let json: { data?: Record<string, unknown> };
       try {
         json = JSON.parse(bodyText);
       } catch {
@@ -128,10 +128,12 @@ export default function ScanPage() {
     if (isGalleryMode) {
       const uploaded = sessionStorage.getItem("skinstric_uploaded_image");
       if (uploaded) {
-        setCapturedImage(uploaded);
-        analyzeImage(uploaded);
+        queueMicrotask(() => {
+          setCapturedImage(uploaded);
+          analyzeImage(uploaded);
+        });
       } else {
-        setError("No uploaded image found. Please go back and choose a photo.");
+        queueMicrotask(() => setError("No uploaded image found. Please go back and choose a photo."));
       }
       return;
     }
@@ -312,5 +314,13 @@ export default function ScanPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ScanPage() {
+  return (
+    <Suspense fallback={null}>
+      <ScanPageInner />
+    </Suspense>
   );
 }

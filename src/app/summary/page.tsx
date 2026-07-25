@@ -42,15 +42,16 @@ export default function SummaryPage() {
       return;
     }
     const parsed: Demographics = JSON.parse(raw);
-    setData(parsed);
-
     const raceSorted = sortedEntries(parsed.race);
     const ageSorted = sortedEntries(parsed.age);
     const genderSorted = sortedEntries(parsed.gender);
 
-    if (raceSorted[0]) setActualRace(raceSorted[0][0]);
-    if (ageSorted[0]) setActualAge(ageSorted[0][0]);
-    if (genderSorted[0]) setActualSex(genderSorted[0][0]);
+    queueMicrotask(() => {
+      setData(parsed);
+      if (raceSorted[0]) setActualRace(raceSorted[0][0]);
+      if (ageSorted[0]) setActualAge(ageSorted[0][0]);
+      if (genderSorted[0]) setActualSex(genderSorted[0][0]);
+    });
   }, [router]);
 
   if (!data) return null;
