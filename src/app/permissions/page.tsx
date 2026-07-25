@@ -1,12 +1,18 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./permissions.module.css";
 
 export default function PermissionsPage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showCameraPrompt, setShowCameraPrompt] = useState(false);
+
+  const goToCameraScan = () => {
+    setShowCameraPrompt(false);
+    router.push("/scan");
+  };
 
   const handleFileChosen = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,7 +43,12 @@ export default function PermissionsPage() {
       </div>
 
       <div className={styles.stage}>
-        <button className={styles.option} onClick={() => router.push("/scan")}>
+        <div
+          className={styles.option}
+          role="button"
+          tabIndex={0}
+          onClick={() => setShowCameraPrompt(true)}
+        >
           <div className={styles.diamondFrame} />
           <div className={styles.iconCircle}>
             <svg viewBox="0 0 24 24" fill="none" stroke="#0d0d0d" strokeWidth="1.4">
@@ -48,7 +59,29 @@ export default function PermissionsPage() {
           <div className={styles.optionLabel}>
             ALLOW A.I.<br />TO SCAN YOUR FACE
           </div>
-        </button>
+
+          {showCameraPrompt && (
+            <div
+              className={styles.cameraPrompt}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={styles.cameraPromptTitle}>
+                ALLOW A.I. TO ACCESS YOUR CAMERA
+              </div>
+              <div className={styles.cameraPromptFooter}>
+                <button
+                  className={styles.denyBtn}
+                  onClick={() => setShowCameraPrompt(false)}
+                >
+                  DENY
+                </button>
+                <button className={styles.allowBtn} onClick={goToCameraScan}>
+                  ALLOW
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
         <button className={styles.option} onClick={() => fileInputRef.current?.click()}>
           <div className={styles.diamondFrame} />
@@ -73,7 +106,7 @@ export default function PermissionsPage() {
       </div>
 
       <div className={styles.footer}>
-        <button className={styles.backBtn} onClick={() => router.push("/testing")}>
+        <button className={styles.backBtn} onClick={() => router.push("/")}>
           <div className={styles.navDiamond}>
             <svg viewBox="0 0 24 24" fill="none" stroke="#0d0d0d" strokeWidth="2">
               <path d="M15 5 L8 12 L15 19" />

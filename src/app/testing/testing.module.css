@@ -147,14 +147,17 @@
 }
 
 .thankYou {
+  font-family: Georgia, "Times New Roman", serif;
   color: var(--ink);
-  font-size: 26px;
-  font-weight: 600;
+  font-size: 40px;
+  font-weight: 400;
 }
 
 .proceedText {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 17px;
   margin-top: 10px;
 }
 
@@ -234,4 +237,10 @@
 
 .inputField:focus {
   outline: none;
+}
+
+.errorText {
+  color: #c0392b;
+  font-size: 12px;
+  margin-top: 10px;
 }

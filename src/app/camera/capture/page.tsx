@@ -88,7 +88,7 @@ export default function CameraCapturePage() {
         </button>
       </div>
 
-      <button className={styles.back} onClick={() => router.push('/result')}>
+      <button className={styles.back} onClick={() => router.push('/')}>
         <DiamondArrow direction="left" />
         BACK
       </button>

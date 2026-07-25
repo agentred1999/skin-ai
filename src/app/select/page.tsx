@@ -24,14 +24,14 @@ export default function SelectPage() {
 
       <div className={styles.stage}>
         <div className={styles.diamondGrid}>
-          <button className={`${styles.cell} ${styles.top}`}>DEMOGRAPHICS</button>
+          <button className={`${styles.cell} ${styles.top}`} onClick={() => router.push("/summary")}><span>DEMOGRAPHICS</span></button>
           <button className={`${styles.cell} ${styles.left}`}>
-            COSMETIC<br />CONCERNS
+            <span>COSMETIC<br />CONCERNS</span>
           </button>
           <button className={`${styles.cell} ${styles.right}`}>
-            SKIN TYPE DETAILS
+            <span>SKIN TYPE DETAILS</span>
           </button>
-          <button className={`${styles.cell} ${styles.bottom}`}>WEATHER</button>
+          <button className={`${styles.cell} ${styles.bottom}`}><span>WEATHER</span></button>
         </div>
       </div>
 

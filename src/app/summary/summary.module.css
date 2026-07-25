@@ -1,0 +1,232 @@
+.page {
+  --ink: #0d0d0d;
+  --line: #d9d9d4;
+  --paper: #ffffff;
+  --muted: #8a8a85;
+  --panel: #f2f2f0;
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Courier New", Courier, monospace;
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brandMark {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--ink);
+  padding: 6px 10px;
+}
+
+.brandSub {
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.enterCode {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.headerBlock {
+  margin-top: 24px;
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bigTitle {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 56px;
+  line-height: 1.1;
+  margin-top: 4px;
+}
+
+.eyebrowSub {
+  font-size: 11px;
+  color: #3a6fd8;
+  margin-top: 6px;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 200px 1fr 380px;
+  gap: 0;
+  margin-top: 40px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+
+.leftRail {
+  display: flex;
+  flex-direction: column;
+}
+
+.railItem {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 20px;
+  border-bottom: 1px solid #333;
+}
+
+.railItem:nth-child(2),
+.railItem:nth-child(3) {
+  background: var(--panel);
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+.railValue {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.railLabel {
+  font-size: 11px;
+  margin-top: 6px;
+  opacity: 0.7;
+}
+
+.centerPanel {
+  background: var(--panel);
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.centerLabel {
+  align-self: flex-start;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
+}
+
+.ringWrap {
+  position: relative;
+  margin-top: 20px;
+}
+
+.ringText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 34px;
+  font-weight: 600;
+}
+
+.rightList {
+  background: var(--panel);
+  border-left: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+}
+
+.rightHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 20px;
+  font-size: 11px;
+  font-weight: 700;
+  border-bottom: 1px solid var(--line);
+}
+
+.rightRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border: none;
+  background: none;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  text-align: left;
+}
+
+.rightRowActive {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.rowLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rowIcon {
+  font-size: 12px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.backBtn,
+.proceedBtn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+}
+
+.navDiamond {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--ink);
+  transform: rotate(45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navDiamond svg {
+  transform: rotate(-45deg);
+  width: 14px;
+  height: 14px;
+}
+
+.navLabel {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--muted);
+}

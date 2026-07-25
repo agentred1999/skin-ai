@@ -6,23 +6,71 @@ import styles from "./testing.module.css";
 
 type Stage = "intro" | "city" | "processing" | "done";
 
+const NAME_REGEX = /^[A-Za-z\s'-]+$/;
+
 export default function TestingPage() {
   const router = useRouter();
   const [stage, setStage] = useState<Stage>("intro");
-
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const isValidName = NAME_REGEX.test(name.trim());
+  const isValidCity = NAME_REGEX.test(city.trim());
+
+  const submitToApi = async () => {
+    setSubmitting(true);
+    setError("");
+    try {
+      const res = await fetch(
+        "https://us-central1-frontend-simplified.cloudfunctions.net/skinstricPhaseOne",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: name.trim(), location: city.trim() }),
+        }
+      );
+      if (!res.ok) throw new Error("Request failed");
+      const data = await res.json();
+      console.log("Phase 1 API response:", data);
+
+      localStorage.setItem("skinstric_name", name.trim());
+      localStorage.setItem("skinstric_location", city.trim());
+
+      setStage("done");
+    } catch (err) {
+      setError("Something went wrong submitting your info. Please try again.");
+      setStage("city");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const goProceed = () => {
-    if (stage === "intro") setStage("city");
-    else if (stage === "city") {
+    if (stage === "intro") {
+      if (!isValidName) {
+        setError("Please enter a valid name (letters only).");
+        return;
+      }
+      setError("");
+      setStage("city");
+    } else if (stage === "city") {
+      if (!isValidCity) {
+        setError("Please enter a valid location (letters only).");
+        return;
+      }
+      setError("");
       setStage("processing");
-      setTimeout(() => setStage("done"), 2500);
-    } else if (stage === "done") router.push("/permissions");
+      submitToApi();
+    } else if (stage === "done") {
+      router.push("/permissions");
+    }
   };
 
   const goBack = () => {
-    if (stage === "intro") router.push("/result");
+    setError("");
+    if (stage === "intro") router.push("/");
     else if (stage === "city") setStage("intro");
     else if (stage === "done") setStage("city");
   };
@@ -54,12 +102,16 @@ export default function TestingPage() {
                 className={styles.inputField}
                 placeholder="Introduce Yourself"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setError("");
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && canProceed) goProceed();
                 }}
                 autoFocus
               />
+              {error && <div className={styles.errorText}>{error}</div>}
             </>
           )}
 
@@ -70,12 +122,16 @@ export default function TestingPage() {
                 className={styles.inputField}
                 placeholder="your city name"
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
+                onChange={(e) => {
+                  setCity(e.target.value);
+                  setError("");
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && canProceed) goProceed();
                 }}
                 autoFocus
               />
+              {error && <div className={styles.errorText}>{error}</div>}
             </>
           )}
 
@@ -109,7 +165,7 @@ export default function TestingPage() {
           <span className={styles.navLabel}>BACK</span>
         </button>
 
-        {(stage === "done" || canProceed) && (
+        {(stage === "done" || canProceed) && !submitting && (
           <button className={styles.proceedBtn} onClick={goProceed}>
             <span className={styles.navLabel}>PROCEED</span>
             <div className={styles.navDiamond}>

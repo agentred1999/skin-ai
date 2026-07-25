@@ -99,17 +99,29 @@
   position: absolute;
   inset: 0;
   border: 1px dotted var(--line);
-  transform: rotate(12deg);
+  transform-origin: center center;
+  animation: rotateOuter 20s linear infinite;
 }
-
 .diamondFrame::after {
   content: "";
   position: absolute;
-  inset: 20px;
+  inset: 0;
   border: 1px dotted var(--line);
-  transform: rotate(-16deg);
+  transform-origin: center center;
+  animation: rotateInner 20s linear infinite;
 }
-
+@keyframes rotateOuter {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes rotateInner {
+  from { transform: rotate(45deg); }
+  to { transform: rotate(405deg); }
+}
+@keyframes rotateInner {
+  from { transform: rotate(-16deg); }
+  to { transform: rotate(344deg); }
+}
 .iconCircle {
   position: relative;
   width: 96px;
@@ -177,4 +189,53 @@
 .navLabel {
   font-size: 12px;
   letter-spacing: 0.04em;
+}
+
+.cameraPrompt {
+  position: absolute;
+  z-index: 3;
+  left: 260px;
+  top: 116px;
+  width: 340px;
+  background: #1a1a1a;
+  color: #ffffff;
+  padding: 16px 18px;
+  text-align: left;
+  cursor: default;
+}
+
+.cameraPromptTitle {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  padding-bottom: 14px;
+}
+
+.cameraPromptFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.denyBtn,
+.allowBtn {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  padding: 0;
+}
+
+.denyBtn {
+  color: #8a8a85;
+}
+
+.allowBtn {
+  color: #ffffff;
+  font-weight: 700;
 }

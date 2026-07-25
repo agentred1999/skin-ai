@@ -1,11 +1,77 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./scan.module.css";
+
+function CameraIcon({ color }: { color: string }) {
+  const bg = color === "#0d0d0d" ? "#ffffff" : "#000000";
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6">
+      <circle cx="12" cy="12" r="10" />
+      <g fill={color} stroke="none">
+        <path d="M12 12 L12 3.2 A8.8 8.8 0 0 1 19.7 7.6 Z" />
+        <path d="M12 12 L19.7 7.6 A8.8 8.8 0 0 1 19.7 16.4 Z" />
+        <path d="M12 12 L19.7 16.4 A8.8 8.8 0 0 1 12 20.8 Z" />
+        <path d="M12 12 L12 20.8 A8.8 8.8 0 0 1 4.3 16.4 Z" />
+        <path d="M12 12 L4.3 16.4 A8.8 8.8 0 0 1 4.3 7.6 Z" />
+        <path d="M12 12 L4.3 7.6 A8.8 8.8 0 0 1 12 3.2 Z" />
+      </g>
+      <circle cx="12" cy="12" r="3.4" fill={bg} stroke="none" />
+    </svg>
+  );
+}
+
+function LoadingDiamond({
+  label,
+  theme = "dark-bg",
+  showDots = false,
+}: {
+  label: string;
+  theme?: "dark-bg" | "light-bg";
+  showDots?: boolean;
+}) {
+  const isLight = theme === "light-bg";
+  return (
+    <div
+      className={`${styles.loadingWrap} ${isLight ? styles.loadingWrapLight : ""}`}
+    >
+      <div className={`${styles.diamondFrame} ${isLight ? styles.diamondFrameLight : ""}`}>
+        <span className={styles.d1} />
+        <span className={styles.d2} />
+        <div
+          className={`${styles.loadingIconCircle} ${
+            isLight ? styles.loadingIconCircleLight : ""
+          }`}
+        >
+          <CameraIcon color={isLight ? "#0d0d0d" : "#ffffff"} />
+        </div>
+      </div>
+      <div className={`${styles.loadingLabel} ${isLight ? styles.loadingLabelLight : ""}`}>
+        {label}
+      </div>
+      {showDots && (
+        <div className={styles.analyzingDots}>
+          <span />
+          <span />
+          <span />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function minDelay<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.all([promise, new Promise((resolve) => setTimeout(resolve, ms))]).then(
+    ([result]) => result
+  );
+}
 
 export default function ScanPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isGalleryMode = searchParams.get("source") === "gallery";
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -13,14 +79,73 @@ export default function ScanPage() {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
 
+  const analyzeImage = async (imageDataUrl: string) => {
+    setAnalyzing(true);
+
+    const base64Only = imageDataUrl.split(",")[1] || imageDataUrl;
+
+    try {
+      const res = await minDelay(
+        fetch(
+          "https://us-central1-frontend-simplified.cloudfunctions.net/skinstricPhaseTwo",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ image: base64Only }),
+          }
+        ),
+        1600
+      );
+
+      const bodyText = await res.text();
+
+      if (!res.ok) {
+        throw new Error(`${res.status} ${res.statusText} — ${bodyText.slice(0, 300)}`);
+      }
+
+      let json: any;
+      try {
+        json = JSON.parse(bodyText);
+      } catch {
+        throw new Error(`Response wasn't valid JSON: ${bodyText.slice(0, 300)}`);
+      }
+
+      if (!json?.data) {
+        throw new Error(`Response missing "data": ${bodyText.slice(0, 300)}`);
+      }
+
+      sessionStorage.setItem("skinstric_demographics", JSON.stringify(json.data));
+      router.push("/select");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error("Phase 2 API error:", message);
+      setAnalyzing(false);
+      alert(`Analysis failed:\n\n${message}`);
+    }
+  };
+
   useEffect(() => {
+    if (isGalleryMode) {
+      const uploaded = sessionStorage.getItem("skinstric_uploaded_image");
+      if (uploaded) {
+        setCapturedImage(uploaded);
+        analyzeImage(uploaded);
+      } else {
+        setError("No uploaded image found. Please go back and choose a photo.");
+      }
+      return;
+    }
+
     let cancelled = false;
 
     (async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" },
-        });
+        const stream = await minDelay(
+          navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "user" },
+          }),
+          1200
+        );
         if (cancelled) {
           stream.getTracks().forEach((t) => t.stop());
           return;
@@ -32,7 +157,10 @@ export default function ScanPage() {
         }
         setReady(true);
       } catch (err) {
-        setError("Camera access was denied or is unavailable.");
+        const name = err instanceof DOMException ? err.name : "UnknownError";
+        const message = err instanceof Error ? err.message : String(err);
+        console.warn("getUserMedia failed:", name, message);
+        setError(`Camera error (${name}): ${message}`);
       }
     })();
 
@@ -40,7 +168,8 @@ export default function ScanPage() {
       cancelled = true;
       streamRef.current?.getTracks().forEach((t) => t.stop());
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isGalleryMode]);
 
   const handleCapture = () => {
     const video = videoRef.current;
@@ -52,28 +181,30 @@ export default function ScanPage() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // mirror the capture to match what's shown on screen
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    setCapturedImage(canvas.toDataURL("image/png"));
+    setCapturedImage(canvas.toDataURL("image/jpeg", 0.85));
   };
 
   const handleRetake = () => {
+    if (isGalleryMode) {
+      router.push("/permissions");
+      return;
+    }
     setCapturedImage(null);
     setAnalyzing(false);
   };
 
   const handleConfirm = () => {
-    setAnalyzing(true);
-    // TODO: replace this with the real analysis call, e.g.
-    //   await fetch("/api/analyze", { method: "POST", body: capturedImage })
-    // then router.push to wherever the results actually live.
-    setTimeout(() => {
-      router.push("/select");
-    }, 2200);
+    if (!capturedImage) return;
+    analyzeImage(capturedImage);
   };
+
+  const showCameraLoading = !isGalleryMode && !ready && !error && !capturedImage;
+  const showCameraLive = !isGalleryMode && ready && !capturedImage;
+  const showPreparingScreen = isGalleryMode && analyzing;
 
   return (
     <div className={styles.page}>
@@ -85,27 +216,43 @@ export default function ScanPage() {
         <button className={styles.enterCode}>ENTER CODE</button>
       </div>
 
-      <div className={styles.stage}>
+      <div className={`${styles.stage} ${showCameraLoading || showPreparingScreen ? styles.stageLight : ""}`}>
         <video
           ref={videoRef}
           className={styles.video}
           muted
           autoPlay
           playsInline
-          style={{ display: ready && !capturedImage ? "block" : "none" }}
+          style={{ display: showCameraLive ? "block" : "none" }}
         />
 
-        {capturedImage && (
+        {capturedImage && !showPreparingScreen && (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={capturedImage} alt="Captured photo" className={styles.video} />
         )}
 
-        {!ready && !error && (
-          <div className={styles.loading}>REQUESTING CAMERA…</div>
-        )}
         {error && <div className={styles.error}>{error}</div>}
 
-        {ready && !capturedImage && (
+        {showCameraLoading && (
+          <>
+            <LoadingDiamond label="SETTING UP CAMERA..." theme="light-bg" />
+            <div className={`${styles.guidanceStatic} ${styles.guidanceStaticLight}`}>
+              <div className={styles.guidanceTitle}>
+                TO GET BETTER RESULTS MAKE SURE TO HAVE
+              </div>
+              <div className={styles.guidanceItems}>
+                <span>&#9671; NEUTRAL EXPRESSION</span>
+                <span>&#9671; FRONTAL POSE</span>
+                <span>&#9671; ADEQUATE LIGHTING</span>
+              </div>
+              <div className={styles.loadingBarTrack}>
+                <div className={styles.loadingBarFill} />
+              </div>
+            </div>
+          </>
+        )}
+
+        {showCameraLive && (
           <>
             <div className={styles.guidance}>
               <div className={styles.guidanceTitle}>
@@ -118,7 +265,7 @@ export default function ScanPage() {
               </div>
             </div>
 
-            <button className={styles.backBtn} onClick={() => router.push("/result")}>
+            <button className={styles.backBtn} onClick={() => router.push("/permissions")}>
               <div className={styles.backDiamond}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2">
                   <path d="M15 5 L8 12 L15 19" />
@@ -139,41 +286,29 @@ export default function ScanPage() {
           </>
         )}
 
-        {capturedImage && (
+        {capturedImage && !isGalleryMode && !analyzing && (
           <>
             <div className={styles.greatShot}>GREAT SHOT!</div>
-
             <div className={styles.reviewBar}>
               <div className={styles.previewLabel}>Preview</div>
               <div className={styles.reviewButtons}>
-                <button
-                  className={styles.retakeBtn}
-                  onClick={handleRetake}
-                  disabled={analyzing}
-                >
+                <button className={styles.retakeBtn} onClick={handleRetake}>
                   Retake
                 </button>
-                <button
-                  className={styles.confirmBtn}
-                  onClick={handleConfirm}
-                  disabled={analyzing}
-                >
-                  {analyzing ? "Uploading..." : "Use This Photo"}
+                <button className={styles.confirmBtn} onClick={handleConfirm}>
+                  Use This Photo
                 </button>
               </div>
             </div>
-
-            {analyzing && (
-              <div className={styles.analyzingBox}>
-                <div className={styles.analyzingTitle}>ANALYZING IMAGE...</div>
-                <div className={styles.analyzingDots}>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </div>
-            )}
           </>
+        )}
+
+        {analyzing && (
+          <LoadingDiamond
+            label="PREPARING YOUR ANALYSIS..."
+            theme={showPreparingScreen ? "light-bg" : "dark-bg"}
+            showDots
+          />
         )}
       </div>
     </div>
