@@ -137,6 +137,15 @@
   line-height: 0.9375;
   letter-spacing: -0.07em;
   max-width: 680px;
+  transition: transform 0.35s ease;
+}
+
+.main:has(.sideAction.right:hover) .headline {
+  transform: translateX(-160px);
+}
+
+.main:has(.sideAction.left:hover) .headline {
+  transform: translateX(160px);
 }
 
 .subtext {

@@ -21,21 +21,23 @@ function HoldToNavigate({
   side,
   icon,
   label,
+  disabled = false,
 }: {
   href: string;
   side: "left" | "right";
   icon: React.ReactNode;
   label: string;
+  disabled?: boolean;
 }) {
   const router = useRouter();
 
   return (
     <div
       className={`${styles.sideAction} ${styles[side]}`}
-      onClick={() => router.push(href)}
+      onClick={disabled ? undefined : () => router.push(href)}
       role="button"
       tabIndex={0}
-      style={{ cursor: "pointer" }}
+      style={{ cursor: disabled ? "default" : "pointer" }}
     >
       <div className={styles.diamond}>
         <span className={styles.diamondIcon}>{icon}</span>
@@ -85,7 +87,7 @@ export default function Home() {
           </span>
         </Link>
 
-        <HoldToNavigate href="/testing" side="left" icon={<ChevronIcon direction="left" />} label="Discover A.I." />
+        <HoldToNavigate href="/testing" side="left" icon={<ChevronIcon direction="left" />} label="Discover A.I." disabled />
 
         <HoldToNavigate href="/testing" side="right" icon={<ChevronIcon direction="right" />} label="Take Test" />
       </main>

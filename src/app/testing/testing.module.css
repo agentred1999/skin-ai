@@ -244,3 +244,51 @@
   font-size: 12px;
   margin-top: 10px;
 }
+
+@media (max-width: 640px) {
+  .page {
+    padding: 20px 20px;
+    overflow-x: hidden;
+  }
+
+  .title {
+    font-size: 12px;
+  }
+
+  .diamondFrame {
+    width: 280px;
+    height: 280px;
+  }
+
+  .star span {
+    width: 220px;
+    height: 220px;
+  }
+
+  .s3 {
+    width: 190px;
+    height: 190px;
+  }
+
+  .thankYou {
+    font-size: 26px;
+  }
+
+  .proceedText {
+    font-size: 14px;
+  }
+
+  .processingText {
+    font-size: 13px;
+  }
+
+  .inputField {
+    font-size: 30px;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .inputLabel {
+    font-size: 10px;
+  }
+}

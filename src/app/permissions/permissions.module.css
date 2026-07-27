@@ -118,10 +118,6 @@
   from { transform: rotate(45deg); }
   to { transform: rotate(405deg); }
 }
-@keyframes rotateInner {
-  from { transform: rotate(-16deg); }
-  to { transform: rotate(344deg); }
-}
 .iconCircle {
   position: relative;
   width: 96px;
@@ -238,4 +234,60 @@
 .allowBtn {
   color: #ffffff;
   font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 20px 20px;
+  }
+
+  .title {
+    font-size: 12px;
+    margin-top: 16px;
+  }
+
+  .previewBox {
+    position: static;
+    text-align: left;
+    margin-top: 16px;
+  }
+
+  .previewSquare {
+    width: 80px;
+    height: 64px;
+  }
+
+  .stage {
+    flex-direction: column;
+    gap: 32px;
+    padding: 24px 0;
+  }
+
+  .option {
+    width: min(78vw, 280px);
+    height: min(78vw, 280px);
+  }
+
+  .optionLabel {
+    font-size: 10px;
+    bottom: 22px;
+  }
+
+  .iconCircle {
+    width: 76px;
+    height: 76px;
+  }
+
+  .iconCircle svg {
+    width: 34px;
+    height: 34px;
+  }
+
+  .cameraPrompt {
+    left: 50%;
+    top: auto;
+    bottom: 20px;
+    transform: translateX(-50%);
+    width: min(88vw, 340px);
+  }
 }
