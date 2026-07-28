@@ -57,7 +57,12 @@ export default function SummaryPage() {
   if (!data) return null;
 
   const raceSorted = sortedEntries(data.race);
-  const topRacePct = raceSorted.length ? toPercent(raceSorted[0][1]) : "0.00";
+  const selectedEntry = raceSorted.find(([key]) => key === actualRace);
+  const topRacePct = selectedEntry
+    ? toPercent(selectedEntry[1])
+    : raceSorted.length
+    ? toPercent(raceSorted[0][1])
+    : "0.00";
   const circumference = 2 * Math.PI * 170;
   const dashOffset = circumference * (1 - parseFloat(topRacePct) / 100);
 

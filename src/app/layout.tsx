@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import ConsoleTools from "./console-tools";
 
@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   title: "Skinstric | Your AI Skin Analysis",
   description:
     "Skinstric developed an A.I. that creates a highly-personalized routine tailored to what your skin needs.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
