@@ -21,6 +21,3 @@ cd skin-ai
 npm install
 npm run dev
 ```
-
-## Live Demo
-[View Live](https://agentred1999.github.io/skin-ai)
